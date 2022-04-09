@@ -87,6 +87,6 @@ if __name__ == "__main__":
     # IMPLEMENTARE TRY-CATCH 
         # ERRORE: la periferica non è montata/ il percorso non esiste
         # IL FILE NON E' chiuso??
-
+        # Atomizzare le funzioni del main->più funzioni
     # UNIT TEST!!!
         #shutil.copy2(src, dst1) salva le ultime modifiche? ---> MAC times
