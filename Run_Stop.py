@@ -9,7 +9,7 @@ import sys
 
 def run(config):
     #CHANGE FLAG RUN (true)
-    config['STATE']['flag_run'] = '1'  # è messo in run
+    config['STATE']['flag_run'] = 'run'  # è messo in run
     with open('config.ini', 'w') as configfile:
         config.write(configfile)  # Salvo le modifiche
     #TOAST NOTIFY(IL BACKUP E' RIPARTITO)
@@ -30,7 +30,8 @@ def save():
 
 def stop(config):
     #CHANGE FLAG RUN (false)
-    config['STATE']['flag_run'] = '0'  # è messo in run
+   
+    config['STATE']['flag_run'] = 'stop'  # è messo in run
     with open('config.ini', 'w') as configfile:
         config.write(configfile)  # Salvo le modifiche
     save()
@@ -41,10 +42,10 @@ def main():
     if len(sys.argv) < 2:
         sys.exit("ERRORE: Argomenti mancanti")
     config = configparser.ConfigParser()
-
-    if sys.argv[1] == 0:
+    config.read('config.ini')
+    if sys.argv[1] == "stop":
         stop(config)
-    elif sys.argv[1] == 1:
+    elif sys.argv[1] == "run":
         run(config)
     else :
         sys.exit("ERRORE: Argomenti sbagliati contattare admin")
