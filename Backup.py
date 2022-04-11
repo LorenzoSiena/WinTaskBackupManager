@@ -58,7 +58,7 @@ def main():
     try:
         # se non esiste config.ini crealo predefinito
         if not os.path.exists('config.ini'):  # config.ini->path/to/config.ini
-            config['STATE'] = {'st': 'a', 'flag_run': '1'}  # FLAG 1-0 RUN-STOP
+            config['STATE'] = {'st': 'a', 'flag_run': 'run'}  # FLAG 1-0 RUN-STOP
             config['PATH'] = {
                 'dst1': 'path/to/dest1/',  # changethis
                 'dst2': 'path/to/dest2/',  # changethis
@@ -93,7 +93,7 @@ def main():
         # TOAST NOTIFY
         sys.exit(42)
 
-    if config['STATE']['flag_run'] == '0':
+    if config['STATE']['flag_run'] == 'stop':
         # TOAST NOTIFY -> Disattivo
         print("Il servizio è stoppato")
 
