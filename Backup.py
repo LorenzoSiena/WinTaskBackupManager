@@ -13,74 +13,116 @@ from datetime import datetime
 
 # Check che i path in cui salvare esistano
 def init(dst1, dst2, dst3, daily):
+
     if not os.path.exists(dst1):
-        os.makedirs(dst1)
+        try:
+            os.makedirs(dst1, exist_ok=True)
+            print("Directory '%s' created successfully" % dst1)
+        except OSError as error:
+            print("Directory '%s' can not be created")
+    print("A")
+
     if not os.path.exists(dst2):
-        os.makedirs(dst2)
+        print("XXXX")
+        try:
+            os.makedirs(dst2, exist_ok=True)
+            print("Directory '%s' created successfully" % dst2)
+        except OSError as error:
+            print("Directory '%s' can not be created")
+    print("B")
+
     if not os.path.exists(dst3):
-        os.makedirs(dst3)
+        try:
+            print("XXXX")
+            os.makedirs(dst3, exist_ok=True)
+            print("Directory '%s' created successfully" % dst3)
+        except OSError as error:
+            print("Directory '%s' can not be created")
+    print("C")
+
     if not os.path.exists(daily):
-        os.makedirs(daily)
+        try:
+            print("XXXX")
+            os.makedirs(daily, exist_ok=True)
+            print("Directory '%s' created successfully" % daily)
+        except OSError as error:
+            print("Directory '%s' can not be created")
+    print("D")
 
 
 def main():
 
-    #if flag = 0
-        ## || FLAG 0 ->STOP
-        #TOAST NOTIFY -> BackupService is not running    
-        #sys.exit(9)  
-
     # Uso configparser
     config = configparser.ConfigParser()
-    if config['STATE']['flag_run'] == '0':
-        #TOAST NOTIFY -> Disattivo
-        sys.exit(42)  
-
-    if not os.path.exists(src):  # MANCA IL FILE!
-        #TOAST NOTIFY -> IL FILE NON ESISTE
-        sys.exit(42)  
 
     try:
         # se non esiste config.ini crealo predefinito
         if not os.path.exists('config.ini'):  # config.ini->path/to/config.ini
-            config['STATE'] = {'st': 'a','flag_run': '1'} #FLAG 1-0 RUN-STOP
+            config['STATE'] = {'st': 'a', 'flag_run': '1'}  # FLAG 1-0 RUN-STOP
             config['PATH'] = {
-                'dst1': '/path/to/dest1/',  # changethis
-                'dst2': '/path/to/dest2/',  # changethis
-                'dst3': '/path/to/dest3/',  # changethis
-                'daily': '/path/to/daily/',  # changethis
-                'src': '/path/to/backup'   # changethis
-                }
+                'dst1': 'path/to/dest1/',  # changethis
+                'dst2': 'path/to/dest2/',  # changethis
+                'dst3': 'path/to/dest3/',  # changethis
+                'daily': 'path/to/daily/',  # changethis
+                'src': 'backup'   # changethis
+            }
             with open('config.ini', 'w') as configfile:  # config.ini->path/to/config.ini
                 config.write(configfile)
-       
+        print("BROH!")
+        config.read('config.ini') ######???????????
         # recupero dal file ini
         dst1 = config['PATH']['dst1']
         dst2 = config['PATH']['dst2']
         dst3 = config['PATH']['dst3']
         daily = config['PATH']['daily']
         src = config['PATH']['src']
-    except:
-        print('Errore Creazione config.ini!!')
-        #TOAST NOTIFY
-        #exit?
+        print(daily)
+        print(dst1)
+        print(dst2)
+        print(dst3)
+        print(src)
+    except Exception as e: 
+        print(e)
+        # TOAST NOTIFY
+        # exit?
 
     try:
-    
+        init(dst1, dst2, dst3, daily)
+    except:
+        print('Errore funzione init()')
+        # TOAST NOTIFY
+        sys.exit(42)
+
+    if config['STATE']['flag_run'] == '0':
+        # TOAST NOTIFY -> Disattivo
+        print("Il servizio è stoppato")
+
+        sys.exit(42)
+
+    if not os.path.exists(src):  # MANCA IL FILE!
+        # TOAST NOTIFY -> IL FILE NON ESISTE
+        print("IL file non esiste")
+        sys.exit(42)
+
+    try:
+
         # BackupGiornaliero
         # SE la data di salvataggio di daily/backup è != oggi
-        data_mod = os.path.getmtime(daily)
-        last_mod = datetime.fromtimestamp(data_mod).strftime("%Y%m%d")
-        now = datetime.now()
-        today = now.strftime("%Y%m%d")
-        if today != last_mod:
+        
+        dest = os.path.join(daily,src)
+        if os.path.exists(dest) :
+            data_mod = os.path.getmtime(dest)
+            last_mod = datetime.fromtimestamp(data_mod).strftime("%Y%m%d")
+            now = datetime.now()
+            today = now.strftime("%Y%m%d")
+            if today != last_mod:
+                shutil.copy2(src, daily)
+        else:
             shutil.copy2(src, daily)
     except:
         print('Errore Creazione backup Giornaliero!!')
-        #TOAST NOTIFY
-        #exit?
-
-
+        # TOAST NOTIFY
+        # exit?
 
     try:
         # raccoglie lo stato
@@ -106,8 +148,9 @@ def main():
             # ? f.close()
     except:
         print('Errore passaggio di stato!!')
-        #TOAST NOTIFY
-        #exit?
+        # TOAST NOTIFY
+        # exit?
+
 
 if __name__ == "__main__":
     main()
