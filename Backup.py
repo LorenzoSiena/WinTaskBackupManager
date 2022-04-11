@@ -24,67 +24,97 @@ def init(dst1, dst2, dst3, daily):
 
 
 def main():
-    # ADD PANIC BUTTON FOR TODAY??
-    if not os.path.exists(src):  # MANCA IL FILE!
-        sys.exit(42)  # POSSO RACCOGLIERLO E LANCIARE UN AVVERTIMENTO?
+
+    #if flag = 0
+        ## || FLAG 0 ->STOP
+        #TOAST NOTIFY -> BackupService is not running    
+        #sys.exit(9)  
 
     # Uso configparser
     config = configparser.ConfigParser()
-    # se non esiste config.ini crealo predefinito
-    if not os.path.exists('config.ini'):  # config.ini->path/to/config.ini
-        config['STATE'] = {'state': 'a'}
-        config['PATH'] = {
-            'dst1': '/path/to/dest1/',  # changethis
-            'dst2': '/path/to/dest2/',  # changethis
-            'dst3': '/path/to/dest3/',  # changethis
-            'daily': '/path/to/daily/',  # changethis
-            'src': '/path/to/backup'}  # changethis
-        with open('config.ini', 'w') as configfile:  # config.ini->path/to/config.ini
-            config.write(configfile)
-    # recupero dal file ini
-    dst1 = config['PATH']['dst1']
-    dst2 = config['PATH']['dst2']
-    dst3 = config['PATH']['dst3']
-    daily = config['PATH']['daily']
-    src = config['PATH']['src']
+    if config['STATE']['flag_run'] == '0':
+        #TOAST NOTIFY -> Disattivo
+        sys.exit(42)  
 
-    init(dst1, dst2, dst3, daily)
+    if not os.path.exists(src):  # MANCA IL FILE!
+        #TOAST NOTIFY -> IL FILE NON ESISTE
+        sys.exit(42)  
 
-    # BackupGiornaliero
-    # SE la data di salvataggio di daily/backup è != oggi
-    data_mod = os.path.getmtime(daily)
-    last_mod = datetime.fromtimestamp(data_mod).strftime("%Y%m%d")
-    now = datetime.now()
-    today = now.strftime("%Y%m%d")
-    if today != last_mod:
-        shutil.copy2(src, daily)
+    try:
+        # se non esiste config.ini crealo predefinito
+        if not os.path.exists('config.ini'):  # config.ini->path/to/config.ini
+            config['STATE'] = {'st': 'a','flag_run': '1'} #FLAG 1-0 RUN-STOP
+            config['PATH'] = {
+                'dst1': '/path/to/dest1/',  # changethis
+                'dst2': '/path/to/dest2/',  # changethis
+                'dst3': '/path/to/dest3/',  # changethis
+                'daily': '/path/to/daily/',  # changethis
+                'src': '/path/to/backup'   # changethis
+                }
+            with open('config.ini', 'w') as configfile:  # config.ini->path/to/config.ini
+                config.write(configfile)
+       
+        # recupero dal file ini
+        dst1 = config['PATH']['dst1']
+        dst2 = config['PATH']['dst2']
+        dst3 = config['PATH']['dst3']
+        daily = config['PATH']['daily']
+        src = config['PATH']['src']
+    except:
+        print('Errore Creazione config.ini!!')
+        #TOAST NOTIFY
+        #exit?
 
-    # raccoglie lo stato
-    state = config['STATE']['st']
+    try:
+    
+        # BackupGiornaliero
+        # SE la data di salvataggio di daily/backup è != oggi
+        data_mod = os.path.getmtime(daily)
+        last_mod = datetime.fromtimestamp(data_mod).strftime("%Y%m%d")
+        now = datetime.now()
+        today = now.strftime("%Y%m%d")
+        if today != last_mod:
+            shutil.copy2(src, daily)
+    except:
+        print('Errore Creazione backup Giornaliero!!')
+        #TOAST NOTIFY
+        #exit?
 
-    if state == 'a':
-        shutil.copy2(src, dst1)
-        config['STATE']['st'] = 'b'  # stato-> stato_successivo
-        config.write(configfile)  # IL FILE E' CHIUSO?????
-        # ? f.close()
-    elif state == 'b':
-        shutil.copy2(src, dst2)
-        config['STATE']['st'] = 'c'  # stato-> stato_successivo
-        config.write(configfile)  # IL FILE E' CHIUSO?????
-        # ? f.close()
-    else:
-        shutil.copy2(src, dst3)
-        config['STATE']['st'] = 'a'  # stato-> stato_successivo
-        config.write(configfile)  # IL FILE E' CHIUSO?????
-        # ? f.close()
 
+
+    try:
+        # raccoglie lo stato
+        state = config['STATE']['st']
+
+        if state == 'a':
+            shutil.copy2(src, dst1)
+            config['STATE']['st'] = 'b'  # stato-> stato_successivo
+            with open('config.ini', 'w') as configfile:
+                config.write(configfile)  # IL FILE E' CHIUSO?????
+            # ? f.close()
+        elif state == 'b':
+            shutil.copy2(src, dst2)
+            config['STATE']['st'] = 'c'  # stato-> stato_successivo
+            with open('config.ini', 'w') as configfile:
+                config.write(configfile)  # IL FILE E' CHIUSO?????
+            # ? f.close()
+        else:
+            shutil.copy2(src, dst3)
+            config['STATE']['st'] = 'a'  # stato-> stato_successivo
+            with open('config.ini', 'w') as configfile:
+                config.write(configfile)  # IL FILE E' CHIUSO?????
+            # ? f.close()
+    except:
+        print('Errore passaggio di stato!!')
+        #TOAST NOTIFY
+        #exit?
 
 if __name__ == "__main__":
     main()
 
 
 # TO-DO
-    # IMPLEMENTARE TRY-CATCH
+    # IMPLEMENTARE TRY-EXEPT
     # ERRORE: la periferica non è montata/ il percorso non esiste
     # IL FILE NON E' chiuso??
     # Atomizzare le funzioni del main->più funzioni
