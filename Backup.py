@@ -1,3 +1,6 @@
+#TODO-> sistemare e controllare le eccezioni
+# controllare e testare su windows
+
 from re import I
 import shutil
 import os,platform,subprocess
