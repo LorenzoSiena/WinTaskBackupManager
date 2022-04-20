@@ -64,7 +64,7 @@ def errorh(flag,msg):
 
 
 def main():
-
+    config_path = 'config.ini'  #PATH DEL FILE CONFIG.INI
     #Sono su windows?
     if platform.system() == 'Windows': 
         os.environ["COMSPEC"] = 'powershell'
@@ -74,8 +74,8 @@ def main():
      
     try:
         # se non esiste config.ini crealo predefinito
-        if not os.path.exists('config.ini'):  # config.ini->path/to/config.ini
-            config['STATE'] = {'st': 'a', 'flag_run': 'run'}  # FLAG 1-0 RUN-STOP
+        if not os.path.exists(config_path): 
+            config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
                 'dst1': 'path/to/dest1/',  # changethis
                 'dst2': 'path/to/dest2/',  # changethis
@@ -84,9 +84,9 @@ def main():
                 'src': 'backup'   # changethis
                 
             }
-            with open('config.ini', 'w') as configfile:  # config.ini->path/to/config.ini
+            with open(config_path, 'w') as configfile: 
                 config.write(configfile)
-        config.read('config.ini') ######???????????
+        config.read(config_path) 
         # recupero dal file ini
         dst1 = config['PATH']['dst1']
         dst2 = config['PATH']['dst2']
@@ -149,19 +149,19 @@ def main():
         if state == 'a':
             shutil.copy2(src, dst1)
             config['STATE']['st'] = 'b'  # stato-> stato_successivo
-            with open('config.ini', 'w') as configfile:
+            with open(config_path, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             # ? f.close()
         elif state == 'b':
             shutil.copy2(src, dst2)
             config['STATE']['st'] = 'c'  # stato-> stato_successivo
-            with open('config.ini', 'w') as configfile:
+            with open(config_path, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             # ? f.close()
         else:
             shutil.copy2(src, dst3)
             config['STATE']['st'] = 'a'  # stato-> stato_successivo
-            with open('config.ini', 'w') as configfile:
+            with open(config_path, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             # ? f.close()
     except :

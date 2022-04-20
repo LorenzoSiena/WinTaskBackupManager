@@ -12,10 +12,10 @@ from time import strftime
     #flag -> stop
     #copy file sul desktop
 
-def run(config):
+def run(config,config_path):
     #CHANGE FLAG RUN (true)
     config['STATE']['flag_run'] = 'run'  # è messo in run
-    with open('config.ini', 'w') as configfile:
+    with open(config_path, 'w') as configfile:
         config.write(configfile)  # Salvo le modifiche
     #TOAST NOTIFY(IL BACKUP E' RIPARTITO)
     print("Backup Attivato!")
@@ -44,10 +44,10 @@ def time_stamp_folder(src,path_desktop,bool):
     else:   #exception
         print(src," non è stato trovato")
 
-def save(config):
+def save(config,config_path):
     print("salvo")
     #leggo i path da config
-    config.read('config.ini')  ##ridondanza? 
+    config.read(config_path)
     dst1 = config['PATH']['dst1']
     dst2 = config['PATH']['dst2']
     dst3 = config['PATH']['dst3']
@@ -80,26 +80,26 @@ def save(config):
     #DESKTOP->TIMESTAMP (TODAY)
     print("salvo")
 
-def stop(config):
+def stop(config,config_path):
     #CHANGE FLAG RUN (false)
    
     config['STATE']['flag_run'] = 'stop'  # è messo in run
-    with open('config.ini', 'w') as configfile:
+    with open(config_path, 'w') as configfile:
         config.write(configfile)  # Salvo le modifiche
-    save(config)
+    save(config,config_path)
     print("Backup Disattivato")
     #TOAST NOTIFY(FILE CREATI E BACKUP FERMO)
 
 def main():
-
     if len(sys.argv) < 2:
         sys.exit("ERRORE: Argomenti mancanti")
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config_path = 'config.ini'
+    config.read(config_path)
     if sys.argv[1] == "stop":
-        stop(config)
+        stop(config,config_path)
     elif sys.argv[1] == "run":
-        run(config)
+        run(config,config_path)
     else :
         sys.exit("ERRORE: Argomenti sbagliati contattare admin")
 
