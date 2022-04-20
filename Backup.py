@@ -170,3 +170,13 @@ if __name__ == "__main__":
 #import subprocess
 #subprocess.call('C:\Windows\System32\powershell.exe Get-Process', shell=True)
 #You can replace "Get-Process" with the PowerShell command you need
+
+
+#####FUNZIONA#########
+#IF WINDOWS LANCIA QUESTO MESSAGGIO
+#import os, subprocess    
+
+#os.environ["COMSPEC"] = 'powershell'
+
+#subprocess.Popen('New-BurntToastNotification -Text "MESSAGGIO_DA_INVIARE" ', shell=True)
+############################
