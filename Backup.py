@@ -65,10 +65,12 @@ def errorh(flag,msg):
 
 def main():
     config_path = 'config.ini'  #PATH DEL FILE CONFIG.INI
-    #Sono su windows?
+    #Sono su windows
     if platform.system() == 'Windows': 
         os.environ["COMSPEC"] = 'powershell'
         flag_win = True
+    else:
+        flag_win = False
     # Uso configparser
     config = configparser.ConfigParser()
      
@@ -183,13 +185,6 @@ if __name__ == "__main__":
     # Atomizzare le funzioni del main->più funzioni
     # UNIT TEST!!!
     # shutil.copy2(src, dst1) salva le ultime modifiche? ---> MAC times
-
-#TRY
-#Using the subprocess library it's possible to run CMD commands within Python. In order to run powershell commands, all you'd need to do is execute C:\Windows\System32\powershell.exe and pass through the arguments.
-#import subprocess
-#subprocess.call('C:\Windows\System32\powershell.exe Get-Process', shell=True)
-#You can replace "Get-Process" with the PowerShell command you need
-
 
 #####FUNZIONA#########
 #IF WINDOWS FLAG =true 

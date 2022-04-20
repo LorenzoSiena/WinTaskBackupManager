@@ -1,5 +1,7 @@
+#TODO-> Trovare un formato più dignitoso per time_stamp_folder
+# controllare e testare time_stamp_folder
 import configparser
-import datetime
+from datetime import datetime
 import os
 import platform
 import shutil
@@ -30,9 +32,9 @@ def time_stamp_folder(src,path_desktop,bool):
             
             if bool:
                 #nome_cartella da salvare sul desktop
-                name_dir = datetime.fromtimestamp(data_mod).strftime("Backup_di_Oggi_%d%m") #fix
+                name_dir = datetime.fromtimestamp(data_mod).strftime("Primo_backup_di_Oggi[Giorno:%d,Mese:%m]") #fix
             else:
-                 name_dir = datetime.fromtimestamp(data_mod).strftime("%H%M%m%d") #fix minuto/ora/giorno/mese
+                 name_dir = datetime.fromtimestamp(data_mod).strftime("Backup[Ore%H:%M,giorno%m_%d]") #
             
             #desktop+nomecartella_data
             full_path=os.path.join(path_desktop,name_dir)
@@ -40,6 +42,7 @@ def time_stamp_folder(src,path_desktop,bool):
             os.makedirs(full_path, exist_ok=True)
             #copia il file sul path desktop
             shutil.copy2(src, full_path)
+            print(full_path)
             print("File copiato correttamente")
     else:   #exception
         print(src," non è stato trovato")
@@ -62,7 +65,7 @@ def save(config,config_path):
     # creo una cartella dove il nome è la data dell'ultima modifica dei file 
     #COPY FILE ON DESKTOP WITH TIMESTAMP
 
-    if platform.system() == 'linux': 
+    if platform.system() == 'Linux': 
         path_desktop= os.path.join(os.path.join(os.path.expanduser('~')),'Scrivania')
     else:
         path_desktop= os.path.join(os.path.join(os.environ['USERPROFILE']),'Desktop')
