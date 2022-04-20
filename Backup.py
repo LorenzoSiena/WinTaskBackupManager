@@ -1,14 +1,12 @@
 #TODO-> sistemare e controllare le eccezioni
 # controllare e testare su windows
 
-from re import I
 import shutil
 import os,platform,subprocess
 import sys
 import configparser
 import datetime
 from datetime import datetime
-from setuptools import Command
 
 # Il file source viene copiato ogni volta che lo script viene avviato in uno dei 3 path sequenziali preimpostati da config.ini
 # (Legge uno stato [a,b,c] preso da config.ini a cui corrisponde un path [dst1, dst2, dst3])
