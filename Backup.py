@@ -1,9 +1,11 @@
+from re import I
 import shutil
-import os
+import os,platform,subprocess
 import sys
 import configparser
 import datetime
 from datetime import datetime
+from setuptools import Command
 
 # Il file source viene copiato ogni volta che lo script viene avviato in uno dei 3 path sequenziali preimpostati da config.ini
 # (Legge uno stato [a,b,c] preso da config.ini a cui corrisponde un path [dst1, dst2, dst3])
@@ -17,41 +19,56 @@ def init(dst1, dst2, dst3, daily):
     if not os.path.exists(dst1):
         try:
             os.makedirs(dst1, exist_ok=True)
-            print("Directory '%s' created successfully" % dst1)
+            print("Directory "+ dst1 +" created successfully")
         except OSError as error:
-            print("Directory '%s' can not be created")
-    print("A")
+            print("Directory "+ dst1 +" can not be created")
+            print(error)
 
     if not os.path.exists(dst2):
         print("XXXX")
         try:
             os.makedirs(dst2, exist_ok=True)
-            print("Directory '%s' created successfully" % dst2)
+            print("Directory "+ dst2 +" created successfully")
         except OSError as error:
-            print("Directory '%s' can not be created")
-    print("B")
+            print("Directory "+ dst2 +" can not be created")
+            print(error)
 
     if not os.path.exists(dst3):
         try:
             print("XXXX")
             os.makedirs(dst3, exist_ok=True)
-            print("Directory '%s' created successfully" % dst3)
+            print("Directory "+ dst3 +" created successfully")
         except OSError as error:
-            print("Directory '%s' can not be created")
-    print("C")
+            print("Directory "+ dst3 +" can not be created")
+            print(error)
 
     if not os.path.exists(daily):
         try:
             print("XXXX")
             os.makedirs(daily, exist_ok=True)
-            print("Directory '%s' created successfully" % daily)
+            print("Directory "+ daily +" created successfully")
         except OSError as error:
-            print("Directory '%s' can not be created")
-    print("D")
+            print("Directory "+ daily +" can not be created")
+            print(error)
+
+def errorh(flag,msg):
+
+    err= 'New-BurntToastNotification -Text '
+    command= err+msg
+    if flag:
+        print("test1:")
+        subprocess.Popen(command, shell=True) #TEST1
+        print("test2:")
+        subprocess.Popen("New-BurntToastNotification -Text '%s' " % msg, shell=True) #TEST2
+    print(msg)
 
 
 def main():
 
+    #Sono su windows?
+    if platform.system() == 'Windows': 
+        os.environ["COMSPEC"] = 'powershell'
+        flag_win = True
     # Uso configparser
     config = configparser.ConfigParser()
      
@@ -69,7 +86,6 @@ def main():
             }
             with open('config.ini', 'w') as configfile:  # config.ini->path/to/config.ini
                 config.write(configfile)
-        print("BROH!")
         config.read('config.ini') ######???????????
         # recupero dal file ini
         dst1 = config['PATH']['dst1']
@@ -84,26 +100,27 @@ def main():
         print(src)
     except Exception as e: 
         print(e)
-        # TOAST NOTIFY
-        # exit?
+        msg="Errore config.ini"
+        errorh(flag_win,msg)
+        sys.exit(12)
 
     try:
         init(dst1, dst2, dst3, daily)
     except:
-        print('Errore funzione init()')
-        # TOAST NOTIFY
-        sys.exit(42)
+        msg="Errore funzione init()"
+        errorh(flag_win,msg)
+        sys.exit(22)
 
     if config['STATE']['flag_run'] == 'stop':
-        # TOAST NOTIFY -> Disattivo
-        print("Il servizio è stoppato")
-
-        sys.exit(42)
+        msg="Il servizio è stoppato"
+        errorh(flag_win,msg)
+        sys.exit(0)
 
     if not os.path.exists(src):  # MANCA IL FILE!
         # TOAST NOTIFY -> IL FILE NON ESISTE
-        print("IL file non esiste")
-        sys.exit(42)
+        msg="Il file del database non è stato trovato"
+        errorh(flag_win,msg)
+        sys.exit(99)
 
     try:
 
@@ -121,9 +138,9 @@ def main():
         else:
             shutil.copy2(src, daily)
     except:
-        print('Errore Creazione backup Giornaliero!!')
-        # TOAST NOTIFY
-        # exit?
+        msg="Errore Creazione backup Giornaliero"
+        errorh(flag_win,msg)
+        sys.exit(32)
 
     try:
         # raccoglie lo stato
@@ -147,10 +164,12 @@ def main():
             with open('config.ini', 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             # ? f.close()
-    except:
-        print('Errore passaggio di stato!!')
-        # TOAST NOTIFY
-        # exit?
+    except :
+        msg="Errore passaggio di stato"
+        errorh(flag_win,msg)
+        sys.exit(52)
+        
+        
 
 
 if __name__ == "__main__":
@@ -173,10 +192,11 @@ if __name__ == "__main__":
 
 
 #####FUNZIONA#########
-#IF WINDOWS LANCIA QUESTO MESSAGGIO
+#IF WINDOWS FLAG =true 
+# LANCIA QUESTO MESSAGGIO nelle eccezioni
 #import os, subprocess    
-
 #os.environ["COMSPEC"] = 'powershell'
-
 #subprocess.Popen('New-BurntToastNotification -Text "MESSAGGIO_DA_INVIARE" ', shell=True)
+
+
 ############################
