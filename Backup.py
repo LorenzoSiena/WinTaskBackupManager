@@ -54,7 +54,7 @@ def main():
 
     # Uso configparser
     config = configparser.ConfigParser()
-
+     
     try:
         # se non esiste config.ini crealo predefinito
         if not os.path.exists('config.ini'):  # config.ini->path/to/config.ini
@@ -65,6 +65,7 @@ def main():
                 'dst3': 'path/to/dest3/',  # changethis
                 'daily': 'path/to/daily/',  # changethis
                 'src': 'backup'   # changethis
+                
             }
             with open('config.ini', 'w') as configfile:  # config.ini->path/to/config.ini
                 config.write(configfile)
@@ -163,3 +164,9 @@ if __name__ == "__main__":
     # Atomizzare le funzioni del main->più funzioni
     # UNIT TEST!!!
     # shutil.copy2(src, dst1) salva le ultime modifiche? ---> MAC times
+
+#TRY
+#Using the subprocess library it's possible to run CMD commands within Python. In order to run powershell commands, all you'd need to do is execute C:\Windows\System32\powershell.exe and pass through the arguments.
+#import subprocess
+#subprocess.call('C:\Windows\System32\powershell.exe Get-Process', shell=True)
+#You can replace "Get-Process" with the PowerShell command you need
