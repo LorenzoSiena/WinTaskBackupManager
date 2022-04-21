@@ -33,9 +33,9 @@ def time_stamp_folder(src,path_desktop,bool):
             
             if bool:
                 #nome_cartella da salvare sul desktop
-                name_dir = datetime.fromtimestamp(data_mod).strftime("Primo_backup_di_Oggi[Giorno:%d,Mese:%m]") #fix
+                name_dir = datetime.fromtimestamp(data_mod).strftime("Oggi[Giorno:%d,Mese:%m]") #fix
             else:
-                 name_dir = datetime.fromtimestamp(data_mod).strftime("Backup[Ore%H:%M,giorno%m_%d]") #
+                 name_dir = datetime.fromtimestamp(data_mod).strftime("[Ore%H:%M,giorno%m_%d]") #
             
             #desktop+nomecartella_data
             full_path=os.path.join(path_desktop,name_dir)
@@ -67,7 +67,7 @@ def save(config,config_path):
     #COPY FILE ON DESKTOP WITH TIMESTAMP
 
     if platform.system() == 'Linux': 
-        path_desktop= os.path.join(os.path.join(os.path.expanduser('~')),'Scrivania')
+        path_desktop= os.path.join(os.path.join(os.path.expanduser('~')),'Scrivania\Backup_oggi')
     else:
         path_desktop= os.path.join(os.path.join(os.environ['USERPROFILE']),'Desktop')
 
@@ -98,7 +98,13 @@ def main():
     if len(sys.argv) < 2:
         sys.exit("ERRORE: Argomenti mancanti")
     config = configparser.ConfigParser()
-    config_path = 'config.ini'
+    #PERCORSO DEL FILE INI DA CERCARE
+    if platform.system() == 'Windows': 
+        config_path= os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager\config.ini')
+    else:
+        config_path = 'config.ini' #test su linux
+    
+    
     config.read(config_path)
     if sys.argv[1] == "stop":
         stop(config,config_path)

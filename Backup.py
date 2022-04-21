@@ -64,14 +64,20 @@ def errorh(flag,msg):
     print(msg)
 
 
+
+
+
 def main():
-    config_path = 'config.ini'  #PATH DEL FILE CONFIG.INI
-    #Sono su windows
+
+    #PERCORSO DEL FILE INI DA CREARE
     if platform.system() == 'Windows': 
+        config_path=os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager\config.ini')
         os.environ["COMSPEC"] = 'powershell'
         flag_win = True
     else:
+        config_path = 'config.ini' #test su linux
         flag_win = False
+    
     # Uso configparser
     config = configparser.ConfigParser()
      
@@ -80,14 +86,14 @@ def main():
         if not os.path.exists(config_path): 
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
-                'dst1': 'path/to/dest1/',  # changethis
-                'dst2': 'path/to/dest2/',  # changethis
-                'dst3': 'path/to/dest3/',  # changethis
-                'daily': 'path/to/daily/',  # changethis
-                'src': 'backup'   # changethis
+                'dst1': 'path/to/dest1/',  #TEST changethis ->> Z:\Backup\20minfa
+                'dst2': 'path/to/dest2/',  #TEST changethis ->> Z:\Backup\40minfa
+                'dst3': 'path/to/dest3/',  #TEST changethis ->> Z:\Backup\60minfa
+                'daily': 'path/to/daily/',  #TEST changethis ->> Z:\Backup\Oggi
+                'src': 'path2/to/File_sorgente'   #TEST changethis->> Nome 
                 
             }
-            with open(config_path, 'w') as configfile: 
+            with open(config_path, 'w') as configfile: #SHOULD WORK!
                 config.write(configfile)
         config.read(config_path) 
         # recupero dal file ini
@@ -96,11 +102,14 @@ def main():
         dst3 = config['PATH']['dst3']
         daily = config['PATH']['daily']
         src = config['PATH']['src']
+        
+        #DEBUG
         print(daily)
         print(dst1)
         print(dst2)
         print(dst3)
         print(src)
+        #DEBUG
     except Exception as e: 
         print(e)
         msg="Errore config.ini"
@@ -120,7 +129,6 @@ def main():
         sys.exit(0)
 
     if not os.path.exists(src):  # MANCA IL FILE!
-        # TOAST NOTIFY -> IL FILE NON ESISTE
         msg="Il file del database non è stato trovato"
         errorh(flag_win,msg)
         sys.exit(99)
@@ -154,19 +162,19 @@ def main():
             config['STATE']['st'] = 'b'  # stato-> stato_successivo
             with open(config_path, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
-            # ? f.close()
+            #tEST ? f.close()
         elif state == 'b':
             shutil.copy2(src, dst2)
             config['STATE']['st'] = 'c'  # stato-> stato_successivo
             with open(config_path, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
-            # ? f.close()
+            #TEST ? f.close()
         else:
             shutil.copy2(src, dst3)
             config['STATE']['st'] = 'a'  # stato-> stato_successivo
             with open(config_path, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
-            # ? f.close()
+            ##TEST ? f.close()
     except :
         msg="Errore passaggio di stato"
         errorh(flag_win,msg)
