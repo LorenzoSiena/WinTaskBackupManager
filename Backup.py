@@ -1,5 +1,8 @@
 #TODO-> sistemare e controllare le eccezioni
-# controllare e testare su windows
+#controllare e testare su windows
+    # ERRORE: la periferica non è montata/ il percorso non esiste
+    # IL FILE NON E' chiuso??
+    # UNIT TEST!!!
 
 import shutil
 import os,platform,subprocess
@@ -53,7 +56,6 @@ def init(dst1, dst2, dst3, daily):
             print(error)
 
 def errorh(flag,msg):
-
     err= 'New-BurntToastNotification -Text '
     command= err+msg
     if flag:
@@ -62,10 +64,6 @@ def errorh(flag,msg):
         print("test2:")
         subprocess.Popen("New-BurntToastNotification -Text '%s' " % msg, shell=True) #TEST2
     print(msg)
-
-
-
-
 
 def main():
 
@@ -80,18 +78,17 @@ def main():
     
     # Uso configparser
     config = configparser.ConfigParser()
-     
+
     try:
         # se non esiste config.ini crealo predefinito
         if not os.path.exists(config_path): 
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
-                'dst1': 'path/to/dest1/',  #TEST changethis ->> Z:\Backup\20minfa
-                'dst2': 'path/to/dest2/',  #TEST changethis ->> Z:\Backup\40minfa
-                'dst3': 'path/to/dest3/',  #TEST changethis ->> Z:\Backup\60minfa
+                'dst1': 'path/to/dest1/',  #TEST changethis  ->> Z:\Backup\20minfa
+                'dst2': 'path/to/dest2/',  #TEST changethis  ->> Z:\Backup\40minfa
+                'dst3': 'path/to/dest3/',  #TEST changethis  ->> Z:\Backup\60minfa
                 'daily': 'path/to/daily/',  #TEST changethis ->> Z:\Backup\Oggi
                 'src': 'path2/to/File_sorgente'   #TEST changethis->> Nome 
-                
             }
             with open(config_path, 'w') as configfile: #SHOULD WORK!
                 config.write(configfile)
@@ -110,6 +107,7 @@ def main():
         print(dst3)
         print(src)
         #DEBUG
+
     except Exception as e: 
         print(e)
         msg="Errore config.ini"
@@ -180,20 +178,8 @@ def main():
         errorh(flag_win,msg)
         sys.exit(52)
         
-        
-
-
 if __name__ == "__main__":
     main()
-
-
-# TO-DO
-    # IMPLEMENTARE TRY-EXEPT
-    # ERRORE: la periferica non è montata/ il percorso non esiste
-    # IL FILE NON E' chiuso??
-    # Atomizzare le funzioni del main->più funzioni
-    # UNIT TEST!!!
-    # shutil.copy2(src, dst1) salva le ultime modifiche? ---> MAC times
 
 #####FUNZIONA#########
 #IF WINDOWS FLAG =true 
@@ -201,6 +187,4 @@ if __name__ == "__main__":
 #import os, subprocess    
 #os.environ["COMSPEC"] = 'powershell'
 #subprocess.Popen('New-BurntToastNotification -Text "MESSAGGIO_DA_INVIARE" ', shell=True)
-
-
 ############################

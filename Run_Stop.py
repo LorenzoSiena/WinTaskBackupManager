@@ -1,5 +1,5 @@
-#TODO-> Trovare un formato più dignitoso per time_stamp_folder
-# controllare e testare time_stamp_folder_
+#TODO-> # controllare e testare time_stamp_folder_     
+        # CREARE 2 FILE START e STOP con pyinstaller su WINDOWS
 
 import configparser
 from datetime import datetime
@@ -22,7 +22,6 @@ def run(config,config_path):
         config.write(configfile)  # Salvo le modifiche
     #TOAST NOTIFY(IL BACKUP E' RIPARTITO)
     print("Backup Attivato!")
-
 
 def time_stamp_folder(src,path_desktop,bool):
     #se il file di backup esiste
@@ -64,15 +63,14 @@ def save(config,config_path):
     full_daily = os.path.join(daily,src)
 
     # creo una cartella dove il nome è la data dell'ultima modifica dei file 
-    #COPY FILE ON DESKTOP WITH TIMESTAMP
+    # COPY FILE ON DESKTOP WITH TIMESTAMP
 
     if platform.system() == 'Linux': 
         path_desktop= os.path.join(os.path.join(os.path.expanduser('~')),'Scrivania\Backup_oggi')
     else:
         path_desktop= os.path.join(os.path.join(os.environ['USERPROFILE']),'Desktop')
 
-        #DESKTOP->TIMESTAMP (60)
-    
+    #DESKTOP->TIMESTAMP (60)
     time_stamp_folder(full_dst1,path_desktop,False)
     #DESKTOP->TIMESTAMP (40)
     time_stamp_folder(full_dst2,path_desktop,False)
@@ -86,7 +84,6 @@ def save(config,config_path):
 
 def stop(config,config_path):
     #CHANGE FLAG RUN (false)
-   
     config['STATE']['flag_run'] = 'stop'  # è messo in run
     with open(config_path, 'w') as configfile:
         config.write(configfile)  # Salvo le modifiche
@@ -104,7 +101,6 @@ def main():
     else:
         config_path = 'config.ini' #test su linux
     
-    
     config.read(config_path)
     if sys.argv[1] == "stop":
         stop(config,config_path)
@@ -112,8 +108,6 @@ def main():
         run(config,config_path)
     else :
         sys.exit("ERRORE: Argomenti sbagliati contattare admin")
-
-
 
 if __name__ == "__main__":
     main()
