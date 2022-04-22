@@ -1,3 +1,5 @@
+#DEMONE= Va avviato ogni 20 minuti
+
 #TODO-> sistemare e controllare le eccezioni
 #controllare e testare su windows
     # ERRORE: la periferica non è montata/ il percorso non esiste
@@ -61,8 +63,8 @@ def errorh(flag,msg):
     if flag:
         print("test1:")
         subprocess.Popen(command, shell=True) #TEST1
-        print("test2:")
-        subprocess.Popen("New-BurntToastNotification -Text '%s' " % msg, shell=True) #TEST2
+       # print("test2:")
+       # subprocess.Popen("New-BurntToastNotification -Text '%s' " % msg, shell=True) #TEST2
     print(msg)
 
 def main():
@@ -110,24 +112,24 @@ def main():
 
     except Exception as e: 
         print(e)
-        msg="Errore config.ini"
+        msg="Errore_config_ini"
         errorh(flag_win,msg)
         sys.exit(12)
 
     try:
         init(dst1, dst2, dst3, daily)
     except:
-        msg="Errore funzione init()"
+        msg="Errore_funzione_init"
         errorh(flag_win,msg)
         sys.exit(22)
 
     if config['STATE']['flag_run'] == 'stop':
-        msg="Il servizio è stoppato"
+        msg="Il_servizio_è_stoppato"
         errorh(flag_win,msg)
         sys.exit(0)
 
     if not os.path.exists(src):  # MANCA IL FILE!
-        msg="Il file del database non è stato trovato"
+        msg="Il_file_del_database_non_trovato"
         errorh(flag_win,msg)
         sys.exit(99)
 
@@ -147,7 +149,7 @@ def main():
         else:
             shutil.copy2(src, daily)
     except:
-        msg="Errore Creazione backup Giornaliero"
+        msg="Errore_Creazione_backup_Giornaliero"
         errorh(flag_win,msg)
         sys.exit(32)
 
@@ -174,7 +176,7 @@ def main():
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             ##TEST ? f.close()
     except :
-        msg="Errore passaggio di stato"
+        msg="Errore_passaggio_di_stato"
         errorh(flag_win,msg)
         sys.exit(52)
         
