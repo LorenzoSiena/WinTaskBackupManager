@@ -92,22 +92,20 @@ def stop(config,config_path):
     #TOAST NOTIFY(FILE CREATI E BACKUP FERMO)
 
 def main():
-    if len(sys.argv) < 2:
-        sys.exit("ERRORE: Argomenti mancanti")
-    config = configparser.ConfigParser()
+
     #PERCORSO DEL FILE INI DA CERCARE
+    config = configparser.ConfigParser()
     if platform.system() == 'Windows': 
         config_path= os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager\config.ini')
     else:
         config_path = 'config.ini' #test su linux
-    
     config.read(config_path)
-    if sys.argv[1] == "stop":
-        stop(config,config_path)
-    elif sys.argv[1] == "run":
-        run(config,config_path)
-    else :
-        sys.exit("ERRORE: Argomenti sbagliati contattare admin")
-
+    
+    
+    #FUNZIONE STOP+SALVA SU SCRIVANIA
+    stop(config,config_path)
+    
+    run(config,config_path)
+    
 if __name__ == "__main__":
     main()

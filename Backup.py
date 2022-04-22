@@ -88,7 +88,7 @@ def main():
                 'dst2': 'path/to/dest2/',  #TEST changethis  ->> Z:\Backup\40minfa
                 'dst3': 'path/to/dest3/',  #TEST changethis  ->> Z:\Backup\60minfa
                 'daily': 'path/to/daily/',  #TEST changethis ->> Z:\Backup\Oggi
-                'src': 'path2/to/File_sorgente'   #TEST changethis->> Nome 
+                'src': 'backup'   #TEST changethis->> Nome 
             }
             with open(config_path, 'w') as configfile: #SHOULD WORK!
                 config.write(configfile)
