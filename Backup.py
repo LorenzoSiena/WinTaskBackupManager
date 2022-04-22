@@ -68,14 +68,15 @@ def errorh(flag,msg):
     print(msg)
 
 def main():
-
+    n_conf="config.ini"
     #PERCORSO DEL FILE INI DA CREARE
-    if platform.system() == 'Windows': 
-        config_path=os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager\config.ini')
+    if platform.system() == 'Windows':
+        config_path=os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager')
+        config_file=os.path.join(config_path,"config.ini")
         os.environ["COMSPEC"] = 'powershell'
         flag_win = True
     else:
-        config_path = 'config.ini' #test su linux
+        config_file = 'config.ini' #test su linux
         flag_win = False
     
     # Uso configparser
@@ -83,8 +84,9 @@ def main():
 
     try:
         # se non esiste config.ini crealo predefinito
-        if not os.path.exists(config_path):
-            os.makedirs(config_path, exist_ok=True)
+        if not os.path.exists(config_file):
+            os.makedirs(config_path, exist_ok=True)#PATH DI config.ini
+            
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
                 'dst1': 'path/to/dest1/',  #TEST changethis  ->> Z:\Backup\20minfa
@@ -93,9 +95,9 @@ def main():
                 'daily': 'path/to/daily/',  #TEST changethis ->> Z:\Backup\Oggi
                 'src': 'backup'   #TEST changethis->> Nome 
             }
-            with open(config_path, 'w') as configfile: #SHOULD WORK!
+            with open(config_file, 'w') as configfile: #SHOULD WORK!
                 config.write(configfile)
-        config.read(config_path) 
+        config.read(config_file) 
         # recupero dal file ini
         dst1 = config['PATH']['dst1']
         dst2 = config['PATH']['dst2']
@@ -153,19 +155,19 @@ def main():
         if state == 'a':
             shutil.copy2(src, dst1)
             config['STATE']['st'] = 'b'  # stato-> stato_successivo
-            with open(config_path, 'w') as configfile:
+            with open(config_file, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             #tEST ? f.close()
         elif state == 'b':
             shutil.copy2(src, dst2)
             config['STATE']['st'] = 'c'  # stato-> stato_successivo
-            with open(config_path, 'w') as configfile:
+            with open(config_file, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             #TEST ? f.close()
         else:
             shutil.copy2(src, dst3)
             config['STATE']['st'] = 'a'  # stato-> stato_successivo
-            with open(config_path, 'w') as configfile:
+            with open(config_file, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             ##TEST ? f.close()
     except :
@@ -175,11 +177,3 @@ def main():
         
 if __name__ == "__main__":
     main()
-
-#####FUNZIONA#########
-#IF WINDOWS FLAG =true 
-# LANCIA QUESTO MESSAGGIO nelle eccezioni
-#import os, subprocess    
-#os.environ["COMSPEC"] = 'powershell'
-#subprocess.Popen('New-BurntToastNotification -Text "MESSAGGIO_DA_INVIARE" ', shell=True)
-############################
