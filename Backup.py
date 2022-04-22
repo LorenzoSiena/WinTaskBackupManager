@@ -83,7 +83,8 @@ def main():
 
     try:
         # se non esiste config.ini crealo predefinito
-        if not os.path.exists(config_path): 
+        if not os.path.exists(config_path):
+            os.makedirs(config_path, exist_ok=True)
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
                 'dst1': 'path/to/dest1/',  #TEST changethis  ->> Z:\Backup\20minfa
@@ -101,14 +102,6 @@ def main():
         dst3 = config['PATH']['dst3']
         daily = config['PATH']['daily']
         src = config['PATH']['src']
-        
-        #DEBUG
-        print(daily)
-        print(dst1)
-        print(dst2)
-        print(dst3)
-        print(src)
-        #DEBUG
 
     except Exception as e: 
         print(e)
