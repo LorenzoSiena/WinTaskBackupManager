@@ -75,18 +75,20 @@ def main():
         config_file=os.path.join(config_path,"config.ini")
         os.environ["COMSPEC"] = 'powershell'
         flag_win = True
+        print("A")
     else:
         config_file = 'config.ini' #test su linux
         flag_win = False
     
     # Uso configparser
     config = configparser.ConfigParser()
-
+    print("B")
     try:
         # se non esiste config.ini crealo predefinito
         if not os.path.exists(config_file):
+            print("BEF")
             os.makedirs(config_path, exist_ok=True)#PATH DI config.ini
-            
+            print("AFTER")
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
                 'dst1': 'path/to/dest1/',  #TEST changethis  ->> Z:\Backup\20minfa
@@ -95,8 +97,11 @@ def main():
                 'daily': 'path/to/daily/',  #TEST changethis ->> Z:\Backup\Oggi
                 'src': 'backup'   #TEST changethis->> Nome 
             }
+            print("X")
             with open(config_file, 'w') as configfile: #SHOULD WORK!
+                print("XX")
                 config.write(configfile)
+        print("XXX")
         config.read(config_file) 
         # recupero dal file ini
         dst1 = config['PATH']['dst1']
@@ -104,11 +109,13 @@ def main():
         dst3 = config['PATH']['dst3']
         daily = config['PATH']['daily']
         src = config['PATH']['src']
-
+        print("GOKU")
     except Exception as e: 
         print(e)
+        print("DIOO")
         msg="Errore_config_ini"
         errorh(flag_win,msg)
+        print("DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
         sys.exit(12)
 
     try:
