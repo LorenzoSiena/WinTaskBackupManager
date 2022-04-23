@@ -71,8 +71,8 @@ def main():
     n_conf="config.ini"
     #PERCORSO DEL FILE INI DA CREARE
     if platform.system() == 'Windows':
-        config_path=os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager')
-        config_file=os.path.join(config_path,"config.ini")
+        config_path=os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager') #'C:\\Users\\Luca_\\Documents\\WinTaskBackManager'
+        config_file=os.path.join(config_path,"config.ini")                               #'C:\\Users\\Luca_\\Documents\\WinTaskBackManager\\config.ini'
         os.environ["COMSPEC"] = 'powershell'
         flag_win = True
         print("A")
@@ -85,25 +85,26 @@ def main():
     print("B")
     try:
         # se non esiste config.ini crealo predefinito
-        if not os.path.exists(config_file):
-            print("BEF")
-            os.makedirs(config_path, exist_ok=True)#PATH DI config.ini
-            print("AFTER")
+        if not os.path.isfile(config_file): #<- SE NON ESISTE UN FILE CHIAMATO #'C:\\Users\\Luca_\\Documents\\WinTaskBackManager\\config.ini'
+            
+            os.makedirs(config_path, exist_ok=True)# CREA IL path di config.ini 
+            
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
                 'dst1': 'path/to/dest1/',  #TEST changethis  ->> Z:\Backup\20minfa
                 'dst2': 'path/to/dest2/',  #TEST changethis  ->> Z:\Backup\40minfa
                 'dst3': 'path/to/dest3/',  #TEST changethis  ->> Z:\Backup\60minfa
                 'daily': 'path/to/daily/',  #TEST changethis ->> Z:\Backup\Oggi
-                'src': 'backup'   #TEST changethis->> Nome 
+                'src': 'backup'   #TEST changethis->> Nome.ESTENSIONE 
             }
             print("X")
+            #TEST
             with open(config_file, 'w') as configfile: #SHOULD WORK!
-                print("XX")
                 config.write(configfile)
-        print("XXX")
-        config.read(config_file) 
-        # recupero dal file ini
+            #TEST
+        print("XXX")#<---------------------------------------- BUG
+        config.read(config_file) #<---------------------------------------- BUG
+        # recupero dal file ini #<---------------------------------------- BUG
         dst1 = config['PATH']['dst1']
         dst2 = config['PATH']['dst2']
         dst3 = config['PATH']['dst3']
