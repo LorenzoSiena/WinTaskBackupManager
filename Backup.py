@@ -102,9 +102,9 @@ def main():
             with open(config_file, 'w') as configfile: #SHOULD WORK!
                 config.write(configfile)
             #TEST
-        print("XXX")#<---------------------------------------- BUG
-        config.read(config_file) #<---------------------------------------- BUG
-        # recupero dal file ini #<---------------------------------------- BUG
+        
+        config.read(config_file) 
+        # recupero dal file ini 
         dst1 = config['PATH']['dst1']
         dst2 = config['PATH']['dst2']
         dst3 = config['PATH']['dst3']

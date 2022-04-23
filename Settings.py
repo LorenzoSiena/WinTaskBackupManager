@@ -1,3 +1,6 @@
+#GUI= Imposta i path di lavoro
+
+from ast import If
 import configparser
 import os
 import platform
@@ -42,6 +45,20 @@ def gui():
         elif event is None or event == "Annulla":
             return None
 
+def test_ini():
+    if platform.system() == 'Windows': 
+        config_path=os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager\config.ini')
+    else:
+        config_path = 'config.ini' #test su linux
+    if not os.path.isfile(config_path):
+        result['src'] ="" #src
+        result['dst1'] ="" #dst1
+        result['dst2'] ="" #dst2
+        result['dst3'] ="" #dst3
+        result['daily'] ="" #daily
+        set_ini(result)
+
+
 def set_ini(result):
     src = result['src'] #src
     dst1 = result['dst1'] #dst1
@@ -54,7 +71,14 @@ def set_ini(result):
     else:
         config_path = 'config.ini' #test su linux
     
-    config = configparser.ConfigParser() 
+    config = configparser.ConfigParser()
+    state = config['STATE']['st'] 
+    flg = config['STATE']['flag_run'] 
+    
+    config['STATE'] ={
+                    'st' : state,
+                    'flag_run' : flg
+                    }
     config['PATH'] = {
                     'dst1': dst1,  
                     'dst2': dst2, 
@@ -66,5 +90,6 @@ def set_ini(result):
         config.write(configfile)
 
 if __name__ == "__main__":
+    test_ini()
     result = gui()
     set_ini(result)
