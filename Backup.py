@@ -68,7 +68,6 @@ def errorh(flag,msg):
     print(msg)
 
 def main():
-    n_conf="config.ini"
     #PERCORSO DEL FILE INI DA CREARE
     if platform.system() == 'Windows':
         config_path=os.path.join(os.path.expanduser('~\Documents'),'WinTaskBackManager') #'C:\\Users\\Luca_\\Documents\\WinTaskBackManager'
@@ -89,11 +88,11 @@ def main():
             os.makedirs(config_path, exist_ok=True)# CREA IL path di config.ini 
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
-                'dst1': 'path/to/dest1/',  #TEST changethis  ->> Z:\Backup\20minfa
-                'dst2': 'path/to/dest2/',  #TEST changethis  ->> Z:\Backup\40minfa
-                'dst3': 'path/to/dest3/',  #TEST changethis  ->> Z:\Backup\60minfa
-                'daily': 'path/to/daily/',  #TEST changethis ->> Z:\Backup\Oggi
-                'src': 'backup'   #TEST changethis->> Nome.ESTENSIONE 
+                'dst1': '',  #TEST changethis  ->> Z:\Backup\20minfa
+                'dst2': '',  #TEST changethis  ->> Z:\Backup\40minfa
+                'dst3': '',  #TEST changethis  ->> Z:\Backup\60minfa
+                'daily': '',  #TEST changethis ->> Z:\Backup\Oggi
+                'src': ''   #TEST changethis->> Nome.ESTENSIONE 
             }
             print("X")
             #WORK
@@ -127,7 +126,7 @@ def main():
         sys.exit(0)
 
     if not os.path.exists(src):  # MANCA IL FILE!
-        msg="Il_file_del_database_non_trovato"
+        msg="File_del_database_non_trovato"
         errorh(flag_win,msg)
         sys.exit(99)
 

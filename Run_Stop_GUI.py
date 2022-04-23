@@ -38,8 +38,7 @@ def gui(config, config_path, down):
             print("X")
             run(config, config_path)
         window.Element('_x_').Update(('Il servizio è già attivo :)', 'Il servizio è disattivato :(')[down])
-        window.Element('_B_').Update(('Stop Backup', 'Start Backup')[down],##CHE CAZZO FA STO COSO DIO?????
-         button_color=(('white', ('red', 'green')[down])))
+        window.Element('_B_').Update(('Stop Backup', 'Start Backup')[down],button_color=('white', ('red', 'green')[down]))
     window.Close()
 
 def run(config, config_path):
@@ -130,20 +129,21 @@ def main():
     config = configparser.ConfigParser()
     if platform.system() == 'Windows':##--------------------------- BUG sdsd
         config_path = os.path.join(os.path.expanduser(
-            '~\Documents'), 'WinTaskBackManager\config.ini')
+            '~\Documents'), 'WinTaskBackManager','config.ini')
     else:
-        config_path = 'config.ini'  # funziona su linux ##--------------------------- BUG sdsd
+        config_path = 'config.ini'
 
-    # FUNZIONE CHE CREA FILE INI  PREDEFINITO SE NON ESISTE
-    #OPPURE
-    #ERRORE -> IL FILE NON ESISTE
+    if not os.path.isfile(config_path):
+        print("Prima avvia Settings")
+        sg.popup_auto_close("ERRORE! Devi impostare il backup con Settings!",button_color="red",auto_close_duration=10)
+        sys.exit(69)
+
     config.read(config_path)
     st = config['STATE']['flag_run']
     if st == 'run':
         st = True
     else:
         st = False
-
     gui(config, config_path, st)  # 'run'/'stop' -> True/False
 
 
