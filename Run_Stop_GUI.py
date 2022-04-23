@@ -1,3 +1,6 @@
+#GUI= Avvia e Ferma il Servizio
+#Quando viene fermato crea una copia dei backup sul desktop
+
 import PySimpleGUI as sg
 import configparser
 from datetime import datetime
@@ -59,10 +62,10 @@ def time_stamp_folder(src, path_desktop, bool):
         if bool:
             # nome_cartella da salvare sul desktop
             name_dir = datetime.fromtimestamp(data_mod).strftime(
-                "Oggi[Giorno:%d,Mese:%m]")  # fix
+                "Oggi[Giorno_%d_Mese_%m]")  # fix
         else:
             name_dir = datetime.fromtimestamp(
-                data_mod).strftime("[Ore%H:%M,giorno%m_%d]")
+                data_mod).strftime("[Ore%H_%M_giorno%m_%d]")
 
         # desktop+nomecartella_data
         full_path = os.path.join(path_desktop, name_dir)
@@ -126,11 +129,15 @@ def stop(config, config_path):
 
 def main():
     config = configparser.ConfigParser()
-    if platform.system() == 'Windows':
+    if platform.system() == 'Windows':##--------------------------- BUG sdsd
         config_path = os.path.join(os.path.expanduser(
             '~\Documents'), 'WinTaskBackManager\config.ini')
     else:
-        config_path = 'config.ini'  # test su linux
+        config_path = 'config.ini'  # funziona su linux ##--------------------------- BUG sdsd
+
+    # FUNZIONE CHE CREA FILE INI  PREDEFINITO SE NON ESISTE
+    #OPPURE
+    #ERRORE -> IL FILE NON ESISTE
     config.read(config_path)
     st = config['STATE']['flag_run']
     if st == 'run':
