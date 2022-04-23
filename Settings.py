@@ -4,6 +4,7 @@ from ast import If
 import configparser
 import os
 import platform
+from tkinter.filedialog import Open
 import PySimpleGUI as sg
 
 
@@ -49,10 +50,12 @@ def gui():
 
 def test_ini():
     if platform.system() == 'Windows':
-        config_path = os.path.join(os.path.expanduser('~\Documents'), 'WinTaskBackManager\config.ini')
+        config_path_file = os.path.join(os.path.expanduser('~\Documents'), 'WinTaskBackManager','config.ini')
+        config_path = os.path.join(os.path.expanduser('~\Documents'), 'WinTaskBackManager')
     else:
         config_path = 'config.ini'  # test su linux
-    if not os.path.isfile(config_path):
+    if not os.path.isfile(config_path_file):
+        os.makedirs(config_path, exist_ok=True)# CREA IL path di config.ini 
         result = {
             "src": "",
             "dst1": "",
@@ -95,10 +98,10 @@ def set_ini(result):
         'src': src
     }
     with open(config_path, 'w') as configfile:
-        config.write(configfile)
-
-
+            config.write(configfile)
+    
 if __name__ == "__main__":
     test_ini()
     result = gui()
-    set_ini(result)
+    if result != None:
+        set_ini(result)

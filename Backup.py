@@ -86,9 +86,7 @@ def main():
     try:
         # se non esiste config.ini crealo predefinito
         if not os.path.isfile(config_file): #<- SE NON ESISTE UN FILE CHIAMATO #'C:\\Users\\Luca_\\Documents\\WinTaskBackManager\\config.ini'
-            
             os.makedirs(config_path, exist_ok=True)# CREA IL path di config.ini 
-            
             config['STATE'] = {'st': 'a', 'flag_run': 'run'} 
             config['PATH'] = {
                 'dst1': 'path/to/dest1/',  #TEST changethis  ->> Z:\Backup\20minfa
@@ -98,11 +96,10 @@ def main():
                 'src': 'backup'   #TEST changethis->> Nome.ESTENSIONE 
             }
             print("X")
-            #TEST
+            #WORK
             with open(config_file, 'w') as configfile: #SHOULD WORK!
                 config.write(configfile)
-            #TEST
-        
+            #WORK
         config.read(config_file) 
         # recupero dal file ini 
         dst1 = config['PATH']['dst1']
@@ -113,10 +110,8 @@ def main():
         print("GOKU")
     except Exception as e: 
         print(e)
-        print("DIOO")
         msg="Errore_config_ini"
         errorh(flag_win,msg)
-        print("DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
         sys.exit(12)
 
     try:
