@@ -21,7 +21,6 @@ def gui(config, config_path, down):
               [sg.Button('Start Backup', size=(15, 2), button_color=('white', 'green'), key='_B_')]]
     
     window = sg.Window('Window Title', layout)
-    #down = True
     while True:             # Event Loop
         event, values = window.Read()
         if event in (None, 'Exit'):
@@ -62,10 +61,10 @@ def time_stamp_folder(src, path_desktop, bool):
         if bool:
             # nome_cartella da salvare sul desktop
             name_dir = datetime.fromtimestamp(data_mod).strftime(
-                "Oggi[Giorno_%d_Mese_%m]")  # fix
+                "Primo_di_Oggi(%d%m)")
         else:
             name_dir = datetime.fromtimestamp(
-                data_mod).strftime("[Ore%H_%M_giorno%m_%d]")
+                data_mod).strftime("Orario(%H%M)Data(%m-%d)")
 
         # desktop+nomecartella_data
         full_path = os.path.join(path_desktop, name_dir)
@@ -99,10 +98,10 @@ def save(config, config_path):
 
     if platform.system() == 'Linux':
         path_desktop = os.path.join(os.path.join(
-            os.path.expanduser('~')), 'Scrivania/Backup_oggi')
+            os.path.expanduser('~')), 'Scrivania','Backup_di_oggi')
     else:
         path_desktop = os.path.join(os.path.join(
-            os.environ['USERPROFILE']), 'Desktop')
+            os.environ['USERPROFILE']), 'Desktop','Backup_di_oggi')
 
     # DESKTOP->TIMESTAMP (60)
     time_stamp_folder(full_dst1, path_desktop, False)
