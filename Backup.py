@@ -177,7 +177,7 @@ def main():
     except FileNotFoundError as f:
         print(f)
         err= str(f).replace(" ", "_")
-        errorh(flag_win,"Destinazione_non_trovata\n"+err)
+        errorh(flag_win,"Destinazione_non_trovata"+err)
         sys.exit(72)
     except Exception  as e:
         print(e)
