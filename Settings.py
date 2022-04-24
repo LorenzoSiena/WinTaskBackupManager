@@ -25,8 +25,8 @@ def gui(s,d1,d2,d3,day):
             sg.FolderBrowse(target="dst1", button_text="Scegli")
         ], [  # ---- New row
             sg.Text('2°dest(Ogni 40 minuti)', size=(20, 1)),
-            sg.InputText(key="dst2"),
-            sg.FolderBrowse(default_text=d2,target="dst2", button_text="Scegli")
+            sg.InputText(default_text=d2,key="dst2"),
+            sg.FolderBrowse(target="dst2", button_text="Scegli")
         ], [  # ---- New row
             sg.Text('3°dest(Ogni 60 minuti)', size=(20, 1)),
             sg.InputText(default_text=d3,key="dst3"),
