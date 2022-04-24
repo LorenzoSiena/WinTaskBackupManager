@@ -176,8 +176,8 @@ def main():
             ##TEST ? f.close()
     except FileNotFoundError as f:
         print(f)
-        msg="ERRORE:Destinazione_salvataggio_non_trovata"
-        errorh(flag_win,msg)
+        err= str(f).replace(" ", "_")
+        errorh(flag_win,err)
         sys.exit(72)
     except Exception  as e:
         print(e)
