@@ -1,6 +1,7 @@
 #GUI= Avvia e Ferma il Servizio
 #Quando viene fermato crea una copia dei backup sul desktop
 
+from pathlib import Path
 import PySimpleGUI as sg
 import configparser
 from datetime import datetime
@@ -49,33 +50,28 @@ def run(config, config_path):
     # TOAST NOTIFY(IL BACKUP E' RIPARTITO)
     print("Backup Attivato!")
 
-
+                      #SRC= BLABLAB/backup.est #path_desktop=desktop/cartella_backup
 def time_stamp_folder(src, path_desktop, bool):
-    # se il file di backup esiste
-    if os.path.exists(src):
+    
 
-        # data modifica in perch
-        data_mod = os.path.getmtime(src)
+   # data modifica in perch->
+    data_mod = os.path.getmtime(src)  
+    #->CREA Cartella destinazione orario/oggi
+    if bool:
+        # #daily
+        name_dir = datetime.fromtimestamp(data_mod).strftime("Primo_di_Oggi(%d%m)")
+    else: #ORARIO_dst1,ORARIO_dst2,ORARIO_dst3
+        name_dir = datetime.fromtimestamp(data_mod).strftime("Orario(%H%M%S)Data(%m-%d)")
 
-        if bool:
-            # nome_cartella da salvare sul desktop
-            name_dir = datetime.fromtimestamp(data_mod).strftime(
-                "Primo_di_Oggi(%d%m)")
-        else:
-            name_dir = datetime.fromtimestamp(
-                data_mod).strftime("Orario(%H%M%S)Data(%m-%d)")
-
-        # desktop+nomecartella_data
-        full_path = os.path.join(path_desktop, name_dir)
-        # crea la cartella
-        os.makedirs(full_path, exist_ok=True)
-        # copia il file sul path desktop
-        shutil.copy2(src, full_path)
-        print(full_path)
-        print("File copiato correttamente")
-    else:  # exception
-        print(src, " non è stato trovato")
-
+    # desktop+nomecartella_data
+    dest_path = os.path.join(path_desktop, name_dir)
+    # crea la cartella
+    os.makedirs(dest_path, exist_ok=True)
+    # copia il file sul path desktop
+    shutil.copy2(src, dest_path)
+    print(dest_path)
+    print("File copiato correttamente")
+    
 
 def save(config, config_path):
     print("salvo")
@@ -86,6 +82,7 @@ def save(config, config_path):
     dst3 = config['PATH']['dst3']
     daily = config['PATH']['daily']
     src = config['PATH']['src']
+    src=Path(src).name #ESTRAE IL NOME backup.estensione
 
     full_dst1 = os.path.join(dst1, src)
     full_dst2 = os.path.join(dst2, src)
@@ -102,15 +99,21 @@ def save(config, config_path):
         path_desktop = os.path.join(os.path.join(
             os.environ['USERPROFILE']), 'Desktop','Backup_di_oggi')
 
-    # DESKTOP->TIMESTAMP (60)
-    time_stamp_folder(full_dst1, path_desktop, False)
-    # DESKTOP->TIMESTAMP (40)
-    time_stamp_folder(full_dst2, path_desktop, False)
-    # DESKTOP->TIMESTAMP (20)
-    time_stamp_folder(full_dst3, path_desktop, False)
+    if os.path.isfile(full_dst1):
+        time_stamp_folder(full_dst1, path_desktop, False)
+    
+    if os.path.isfile(full_dst2):
+        time_stamp_folder(full_dst2, path_desktop, False)
+    
+    
+    if os.path.isfile(full_dst3):
+        time_stamp_folder(full_dst3, path_desktop, False)
+    
     # daily-> Nome deve essere->Giornaliero  :/
-    time_stamp_folder(full_daily, path_desktop, True)
-
+    if os.path.isfile(full_daily):
+        time_stamp_folder(full_daily, path_desktop, True)
+    
+    os.startfile(path_desktop)
     # DESKTOP->TIMESTAMP (TODAY)
     print("salvo")
 
