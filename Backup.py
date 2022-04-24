@@ -6,6 +6,7 @@
     # IL FILE NON E' chiuso??
     # UNIT TEST!!!
 
+from pathlib import Path
 import shutil
 import os,platform,subprocess
 import sys
@@ -134,17 +135,20 @@ def main():
 
         # BackupGiornaliero
         # SE la data di salvataggio di daily/backup è != oggi
-        
-        dest = os.path.join(daily,src)
-        if os.path.exists(dest) :
-            data_mod = os.path.getmtime(dest)
-            last_mod = datetime.fromtimestamp(data_mod).strftime("%Y%m%d")
-            now = datetime.now()
-            today = now.strftime("%Y%m%d")
-            if today != last_mod:
-                shutil.copy2(src, daily)
+        #daily = path nel config.ini
+        src_name =Path(src).name #ESTRAE IL NOME backup.estensione
+        #dest è il path #C:/daily/backup.est
+        dest = os.path.join(daily,src_name)
+
+        if os.path.isfile(dest):                    #se il file esiste
+            data_mod = os.path.getmtime(dest)       #estrai data ultima modifica
+            last_mod = datetime.fromtimestamp(data_mod).strftime("%Y%m%d")  #estrai data ultima modifica file_mod=(YYYY/MM/DD)
+            now = datetime.now()    #estrai data oggi 
+            today = now.strftime("%Y%m%d") #oggi(YYYY/MM/DD)
+            if today != last_mod:       #oggi=(YYYY/MM/DD) != file_mod?
+                shutil.copy2(src, daily) #copia in daily
         else:
-            shutil.copy2(src, daily)
+            shutil.copy2(src, daily)     ##NON ESISTE? il file? -> copia!!!
     except:
         msg="Errore_Creazione_backup_Giornaliero"
         errorh(flag_win,msg)
@@ -155,8 +159,6 @@ def main():
         state = config['STATE']['st']
 
         if state == 'a':
-            
-
             shutil.copy2(src, dst1)
             config['STATE']['st'] = 'b'  # stato-> stato_successivo
             with open(config_file, 'w') as configfile:
