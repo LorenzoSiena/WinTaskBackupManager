@@ -1,11 +1,7 @@
 # GUI= Imposta i path di lavoro
-
-from ast import If
-from asyncore import read
 import configparser
 import os
 import platform
-from tkinter.filedialog import Open
 import PySimpleGUI as sg
 
 
