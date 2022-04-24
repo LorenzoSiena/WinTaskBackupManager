@@ -4,7 +4,6 @@ import os
 import platform
 import PySimpleGUI as sg
 
-
 def gui(s,d1,d2,d3,day):
     layout = [
         [  # ---- Titolo

@@ -1,11 +1,5 @@
 #DEMONE= Va avviato ogni 20 minuti
-
-#TODO-> sistemare e controllare le eccezioni
-#controllare e testare su windows
-    # ERRORE: la periferica non è montata/ il percorso non esiste
-    # IL FILE NON E' chiuso??
-    # UNIT TEST!!!
-
+    
 from pathlib import Path
 import shutil
 import os,platform,subprocess
