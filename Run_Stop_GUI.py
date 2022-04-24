@@ -63,7 +63,7 @@ def time_stamp_folder(src, path_desktop, bool):
                 "Primo_di_Oggi(%d%m)")
         else:
             name_dir = datetime.fromtimestamp(
-                data_mod).strftime("Orario(%H%M)Data(%m-%d)")
+                data_mod).strftime("Orario(%H%M%S)Data(%m-%d)")
 
         # desktop+nomecartella_data
         full_path = os.path.join(path_desktop, name_dir)
