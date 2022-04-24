@@ -155,6 +155,8 @@ def main():
         state = config['STATE']['st']
 
         if state == 'a':
+            
+
             shutil.copy2(src, dst1)
             config['STATE']['st'] = 'b'  # stato-> stato_successivo
             with open(config_file, 'w') as configfile:
@@ -172,7 +174,13 @@ def main():
             with open(config_file, 'w') as configfile:
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             ##TEST ? f.close()
-    except :
+    except FileNotFoundError as f:
+        print(e)
+        msg="ERRORE:Destinazione_salvataggio_non_trovata"
+        errorh(flag_win,msg)
+        sys.exit(72)
+    except Exception  as e:
+        print(e)
         msg="Errore_passaggio_di_stato"
         errorh(flag_win,msg)
         sys.exit(52)
