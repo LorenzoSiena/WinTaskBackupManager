@@ -175,7 +175,7 @@ def main():
                 config.write(configfile)  # IL FILE E' CHIUSO?????
             ##TEST ? f.close()
     except FileNotFoundError as f:
-        print(e)
+        print(f)
         msg="ERRORE:Destinazione_salvataggio_non_trovata"
         errorh(flag_win,msg)
         sys.exit(72)
