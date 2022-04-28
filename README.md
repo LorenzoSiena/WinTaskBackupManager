@@ -23,7 +23,7 @@ REQUISITI:
   For Windows:  
     From POWERSHELL(ADMIN)
   
-		  Set-ExecutionPolicy Unrestricted
+		  Set-ExecutionPolicy Unrestricted (ATTENZIONE:Abilita TUTTI gli script)
 		  pip install PySimpleGUI 
 		  Install-Module -Name BurntToast 
 		  Import-Module BurntToast                                                                        
