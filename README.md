@@ -1,8 +1,26 @@
 # WinTaskBackupManager
+Demone/Servizio in python per Windows e Linux(Beta)
+Il programma si comporta come una state machine 
 
+(A->B)
+(B->C)
+(C->A)
+
+che in ogni stato copia un sorgente in una  dellle tre locazioni diverse
+
+Ogni giorno salva il sorgente la prima volta nella cartella giornaliera
+
+# Utilizzo:
+Impostarre un task scheduler
+	
+	Task Scheduler->WINDOWS
+	cron daemon -> LINUX
+	
+per avviare il Demone/Servizio ad un intervallo scelto.
 
 ## Installazione
 
+(Consigliato)
 Path_installazione = C:\Program Files (x86)\WinTaskbackManager
 
 Creazione del TASK windows:
@@ -28,14 +46,10 @@ REQUISITI:
 		  Install-Module -Name BurntToast 
 		  Import-Module BurntToast                                                                        
 
-
+	
 
 ## Istruzioni
 Dopo aver impostato il task per il file Backup.pyw
-
-A partire da 15 minuti dell'avvio del pc
-Ogni 20 minuti il file del database viene salvato (File Sorgente) sequenzialmente in 3 cartelle diverse (Impostazioni)
-Ogni giorno il primo backup viene salvato in una cartella giornaliera(Impostazioni)
 
 Se c'è un ERRORE con i file e vuoi fermare TUTTO e copiare i backup sulla scrivania
 	Vai su Run_Stop_GUI.py  e clicca su STOP BACKUP
